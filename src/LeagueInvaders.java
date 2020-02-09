@@ -23,12 +23,13 @@ public class LeagueInvaders {
 	
 	void setup() {
 		leagueInvadersJFrame.add(GP);
-		leagueInvadersJFrame.setSize(WIDTH, HEIGHT);
+		leagueInvadersJFrame.setSize(WIDTH, HEIGHT+20);
 		leagueInvadersJFrame.setVisible(true);
 		
 		leagueInvadersJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		leagueInvadersJFrame.addKeyListener(GP);
+		
 	}
 	
 }
