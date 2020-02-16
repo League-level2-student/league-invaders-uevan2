@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -22,7 +24,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     
     Timer frameDraw;
     
+    public static BufferedImage image;
+    public static boolean needImage = true;
+    public static boolean gotImage = false;	
+    
     Rocketship r = new Rocketship(250, 700, 50, 50);
+    
+    ObjectManager o = new ObjectManager(r);
 	
 	GamePanel(){
 	    titleFont = new Font("Arial", Font.PLAIN, 48);
@@ -30,6 +38,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	    
 	    frameDraw = new Timer(1000/60,this);
 	    frameDraw.start();
+	    
+	    if (needImage) {
+	        loadImage ("space.png");
+	    }
 	}
 	
 	@Override
@@ -44,7 +56,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
     
     void updateMenuState() {  }
-    void updateGameState() {  }
+    void updateGameState() { o.update(); }
     void updateEndState()  {  }
     
     void drawMenuState(Graphics g) { 
@@ -63,9 +75,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     }
     
     void drawGameState(Graphics g) { 
-    g.setColor(Color.BLACK);
-    g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-    r.draw(g);
+    	o.draw(g);
+    	if (gotImage) {
+    		g.drawImage("space.png", 0, 0, WIDTH, HEIGHT, null);
+    	} else {
+    		g.setColor(Color.BLUE);
+    		g.fillRect(0, 0, WIDTH, HEIGHT);
+    	}
     }
     
     void drawEndState(Graphics g)  { 
@@ -90,7 +106,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	void loadImage(String imageFile) {
+	    if (needImage) {
+	        try {
+	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		    gotImage = true;
+	        } catch (Exception e) {
+	            
+	        }
+	        needImage = false;
+	    }
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
