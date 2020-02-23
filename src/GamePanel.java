@@ -24,6 +24,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     
     Timer frameDraw;
     
+    Timer alienSpawn;
+    
     public static BufferedImage image;
     public static boolean needImage = true;
     public static boolean gotImage = false;	
@@ -75,13 +77,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     }
     
     void drawGameState(Graphics g) { 
-    	o.draw(g);
     	if (gotImage) {
-    		g.drawImage("space.png", 0, 0, WIDTH, HEIGHT, null);
+    		g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
     	} else {
     		g.setColor(Color.BLUE);
-    		g.fillRect(0, 0, WIDTH, HEIGHT);
+    		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
     	}
+    	o.draw(g);
     }
     
     void drawEndState(Graphics g)  { 
@@ -123,6 +125,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+			if (currentState == MENU) {
+				startGame();
+			}
+			if (currentState == GAME) {
+				endGame();
+			}
 		    if (currentState == END) {
 		        currentState = MENU;
 		    } else {
@@ -157,6 +165,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 					r.right();
 				}
 			}
+			
+			if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+				o.addProjectile(r.getProjectile());
+
+			}
+			
+		
+		}
+		
+		if(currentState==END) {
+			endGame();
+		
 		}
 	}
 		
@@ -166,5 +186,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	void startGame() {
+		alienSpawn = new Timer(1000, o);
+		alienSpawn.start();
+	}
+	
+	void endGame() {
+		alienSpawn.stop();
+	}
+	
+	
  
 }
