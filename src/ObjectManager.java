@@ -17,6 +17,8 @@ public class ObjectManager implements ActionListener {
 		this.r=r;
 	}
 	
+	int score = 0;
+	
 	void addAlien(){
 		aliens.add(new Alien(ran.nextInt(LeagueInvaders.WIDTH),0,50,50));
 	}
@@ -32,6 +34,9 @@ public class ObjectManager implements ActionListener {
 				alien.isActive=false;
 			}
 		}
+		
+		checkCollision();
+		purgeObjects();
 	}
 	
 	void draw(Graphics g){
@@ -48,11 +53,13 @@ public class ObjectManager implements ActionListener {
 		for(int i = 0; i <aliens.size(); i++) {
 			if(aliens.get(i).isActive==false) {
 				aliens.remove(i);
+				System.out.println("if alien is active");
 			}
 		}
 		for(int i = 0; i <projectile.size(); i++) {
 			if(projectile.get(i).isActive==false) {
 				projectile.remove(i);
+				System.out.println("if projectile is active");
 			}
 		}
 	}
@@ -61,6 +68,30 @@ public class ObjectManager implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		addAlien();
-		System.out.println("test");
+	}
+	
+	void checkCollision(){
+		for(int i = 0; i < aliens.size(); i++) {
+			if(r.collisionBox.intersects(aliens.get(i).collisionBox)){
+				r.isActive=false;
+				aliens.get(i).isActive=false;
+				System.out.println("check collision alien and rocketship");
+			}
+		}
+		
+		for(int i = 0; i < projectile.size(); i++) {
+			for(int j = 0; j < aliens.size(); j++) {
+				if(projectile.get(i).collisionBox.intersects(aliens.get(j).collisionBox)){
+					aliens.get(j).isActive=false;
+					projectile.get(i).isActive=false;
+					System.err.println("check collision alien and projectile");
+					score++;
+				}
+			}
+		}
+	}
+	
+	int getScore() {
+		return score;
 	}
 }
