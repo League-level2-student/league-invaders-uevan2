@@ -64,8 +64,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     
     void updateGameState() { 
     	o.update();
-    	
-    	if(r.isActive=false) {
+    	if(r.isActive==false) {
     		currentState=END;
     	}
     }
@@ -146,7 +145,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				startGame();
 			}
 			if (currentState == GAME) {
-				endGame();
+				//endGame();
 			}
 		    if (currentState == END) {
 		        currentState = MENU;

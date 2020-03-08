@@ -34,19 +34,17 @@ public class Projectile extends GameObject{
 	}
 	
 	void draw(Graphics g) {
-		y-=speed;
-		
 		if (gotImage) {
 			g.drawImage(image, x, y, width, height, null);
 		} else {
-			g.setColor(Color.BLUE);
-			g.fillRect(x, y, width, height);
+	        g.setColor(Color.RED);
+	        g.fillRect(x, y, width, height);
 		}
 	}
 	
-	void update(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
-        super.update();
+	void update() {
+		 super.update();
+		this.y-=speed;
+       
 	}
 }
